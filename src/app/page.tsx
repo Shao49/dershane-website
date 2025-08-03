@@ -32,12 +32,21 @@ export default function HomePage() {
     { value: 5, label: 'Yaş Grubu' },
   ]
 
+  // 🔧 Her sayaç için ayrı ayrı useInView kullan
+  const [ref0, inView0] = useInView({ threshold: 0.6, triggerOnce: true })
+  const [ref1, inView1] = useInView({ threshold: 0.6, triggerOnce: true })
+  const [ref2, inView2] = useInView({ threshold: 0.6, triggerOnce: true })
+  const [ref3, inView3] = useInView({ threshold: 0.6, triggerOnce: true })
+
+  const refs = [ref0, ref1, ref2, ref3]
+  const inViews = [inView0, inView1, inView2, inView3]
+
   return (
     <>
-      {/* 🟦 Hero */}
+      {/* Hero */}
       <Hero />
 
-      {/* ✅ Neden Biz */}
+      {/* Neden Biz */}
       <section className="py-20 bg-gradient-to-r from-gray-50 to-white px-6">
         <h2 className="text-3xl font-bold text-center text-neutral-800 mb-12">
           Neden Bizi Tercih Etmelisiniz?
@@ -61,7 +70,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ✅ Eğitim Programları */}
+      {/* Eğitim Programları */}
       <section className="py-20 bg-[#f0f4f8] px-6">
         <h2 className="text-3xl font-bold text-center text-neutral-800 mb-12">
           Eğitim Programlarımız
@@ -85,7 +94,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ✅ CTA + Sayaçlar */}
+      {/* Sayaçlar */}
       <section className="py-24 bg-[#002d4a] text-center text-white px-6">
         <h2 className="text-2xl md:text-3xl font-bold">
           Sizi de aramızda görmek isteriz!
@@ -94,22 +103,17 @@ export default function HomePage() {
           Hemen bizimle iletişime geçin, kontenjan fırsatlarını kaçırmayın!
         </p>
 
-        {/* Sayaçlar */}
         <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-          {sayaclar.map((item, i) => {
-            const { ref, inView } = useInView({ threshold: 0.6, triggerOnce: false })
-            return (
-              <div key={i} ref={ref} className="flex flex-col items-center">
-                <div className="text-4xl font-bold">
-                  {inView ? <CountUp end={item.value} duration={2} /> : '0'}+
-                </div>
-                <p className="mt-2 text-white/90">{item.label}</p>
+          {sayaclar.map((item, i) => (
+            <div key={i} ref={refs[i]} className="flex flex-col items-center">
+              <div className="text-4xl font-bold">
+                {inViews[i] ? <CountUp end={item.value} duration={2} /> : '0'}+
               </div>
-            )
-          })}
+              <p className="mt-2 text-white/90">{item.label}</p>
+            </div>
+          ))}
         </div>
 
-        {/* CTA Butonu */}
         <a
           href="/iletisim"
           className="inline-block mt-12 px-8 py-3 rounded-lg font-semibold text-blue-700 bg-white border border-white transition-all duration-300 relative overflow-hidden group"
